@@ -54,3 +54,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 docker network create shard
 
 #sudo apt-get install -y py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
+
+# Install S3CMD
+sudo apt-get update
+sudo apt-get install s3fs
