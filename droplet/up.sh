@@ -14,7 +14,17 @@
 #NC='\033[0m' # No Color
 #printf "I ${RED}love${NC} Stack Overflow\n"
 
-#Install Docker
+# Assign variables
+SPACE_KEY=$1
+SPACE_SECRET=$2
+SPACE_NAME=$3
+SPACE_ZONE=$4 # nyc3 for example
+BUCKET_LOCATION=$5
+UID=$6 # Get with "id" command
+GID=$7 # Get with "id" command
+USERNAME=$(whoami)
+
+# Install Docker
 
 sudo apt-get update
 sudo apt-get install -y \
@@ -55,6 +65,18 @@ docker network create shard
 
 #sudo apt-get install -y py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
 
-# Install S3CMD
+# Install s3fs
 sudo apt-get update
 sudo apt-get install s3fs
+echo $SPACE_KEY:$SPACE_SECRET > ~/.passwd-s3fs
+chmod 600 ~/.passwd-s3fs
+sudo mkdir /spaces
+sudo mkdir /spaces/$SPACE_NAME
+echo user_allow_other > /etc/fuse.conf
+chmod 644 /etc/fuse.conf
+sudo s3fs $SPACE_NAME /spaces/$SPACE_NAME -o url=https://$SPACE_ZONE.digitaloceanspaces.com -o use_cache=/tmp -o allow_other -o use_path_request_style -o uid=$UID -o gid=$GID
+
+# TODO: Install s3cmd
+sudo apt-get install s3cmd
+# TODO: s3cmd --configure
+# TODO: put config file to /home/$USERNAME/.s3cfg
