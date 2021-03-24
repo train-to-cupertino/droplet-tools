@@ -17,12 +17,10 @@
 # Assign variables
 SPACE_KEY=$1
 SPACE_SECRET=$2
-SPACE_NAME=$3
-SPACE_ZONE=$4 # nyc3 for example
-BUCKET_LOCATION=$5
-UID=$6 # Get with "id" command
-GID=$7 # Get with "id" command
-USERNAME=$(whoami)
+SPACE_NAME=$3 #
+SPACE_ZONE=$4 # fra1 for example
+SPACE_HOST=$5 # fra1.digitaloceanspaces.com for example
+GPG_PASS=$6
 
 # Install Docker
 
@@ -74,9 +72,21 @@ sudo mkdir /spaces
 sudo mkdir /spaces/$SPACE_NAME
 echo user_allow_other > /etc/fuse.conf
 chmod 644 /etc/fuse.conf
-sudo s3fs $SPACE_NAME /spaces/$SPACE_NAME -o url=https://$SPACE_ZONE.digitaloceanspaces.com -o use_cache=/tmp -o allow_other -o use_path_request_style -o uid=$UID -o gid=$GID
+sudo s3fs $SPACE_NAME /spaces/$SPACE_NAME -o url=https://$SPACE_ZONE.digitaloceanspaces.com -o use_cache=/tmp -o allow_other -o use_path_request_style -o uid=$(id -u) -o gid=$(id -g)
 
 # TODO: Install s3cmd
 sudo apt-get install s3cmd
 # TODO: s3cmd --configure
-# TODO: put config file to /home/$USERNAME/.s3cfg
+# TODO: PUT https://raw.githubusercontent.com/train-to-cupertino/droplet-up-script/main/droplet/.s3cfg 
+# TODO: to /home/$(whoami)/.s3cfg
+# Additional settings
+echo "access_key = $SPACE_KEY" >> ~/.s3cfg
+echo "secret_key = $SPACE_SECRET" >> ~/.s3cfg
+echo "host_base = $SPACE_HOST" >> ~/.s3cfg
+echo "host_bucket = %(bucket)s.$SPACE_HOST" >> ~/.s3cfg
+echo "gpg_passphrase = $GPG_PASS" >> ~/.s3cfg
+echo "content_disposition = " >> ~/.s3cfg
+echo "content_type = " >> ~/.s3cfg
+echo "upload_id = " >> ~/.s3cfg
+echo "throttle_max = 100" >> ~/.s3cfg
+chmod 600 ~/.s3cfg
