@@ -95,3 +95,7 @@ echo "content_type = " >> ~/.s3cfg
 echo "upload_id = " >> ~/.s3cfg
 echo "throttle_max = 100" >> ~/.s3cfg
 chmod 600 ~/.s3cfg
+
+# To test S3
+# mkdir /test-s3 && cd /test-se && s3cmd get s3://wmtw-shard-test-space-1/private/secret.txt && cat secret.txt
+# 
