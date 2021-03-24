@@ -14,6 +14,9 @@
 #NC='\033[0m' # No Color
 #printf "I ${RED}love${NC} Stack Overflow\n"
 
+# EXECUTE MANUALLY
+# mkdir /droplet && mkdir /droplet/up && cd /droplet/up && chmod +x up.sh && ./up.sh && sudo apt-get update && sudo apt-get install -y mosh
+
 # Assign variables
 SPACE_KEY=$1
 SPACE_SECRET=$2
@@ -65,7 +68,7 @@ docker network create shard
 
 # Install s3fs
 sudo apt-get update
-sudo apt-get install s3fs
+sudo apt-get install -y s3fs
 echo $SPACE_KEY:$SPACE_SECRET > ~/.passwd-s3fs
 chmod 600 ~/.passwd-s3fs
 sudo mkdir /spaces
@@ -75,11 +78,13 @@ chmod 644 /etc/fuse.conf
 sudo s3fs $SPACE_NAME /spaces/$SPACE_NAME -o url=https://$SPACE_ZONE.digitaloceanspaces.com -o use_cache=/tmp -o allow_other -o use_path_request_style -o uid=$(id -u) -o gid=$(id -g)
 
 # TODO: Install s3cmd
-sudo apt-get install s3cmd
+sudo apt-get install -y s3cmd
 # TODO: s3cmd --configure
 # TODO: PUT https://raw.githubusercontent.com/train-to-cupertino/droplet-up-script/main/droplet/.s3cfg 
 # TODO: to /home/$(whoami)/.s3cfg
 # Additional settings
+wget https://raw.githubusercontent.com/train-to-cupertino/droplet-up-script/main/droplet/.s3cfg 
+cp ./.s3cfg ~/.s3cfg
 echo "access_key = $SPACE_KEY" >> ~/.s3cfg
 echo "secret_key = $SPACE_SECRET" >> ~/.s3cfg
 echo "host_base = $SPACE_HOST" >> ~/.s3cfg
