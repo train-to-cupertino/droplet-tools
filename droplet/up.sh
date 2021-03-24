@@ -15,7 +15,7 @@
 #printf "I ${RED}love${NC} Stack Overflow\n"
 
 # EXECUTE MANUALLY
-# mkdir /droplet && mkdir /droplet/up && cd /droplet/up && chmod +x up.sh && ./up.sh && sudo apt-get update && sudo apt-get install -y mosh
+# sudo apt-get update && sudo apt-get install -y mosh && mkdir /droplet && mkdir /droplet/up && cd /droplet/up && chmod +x up.sh && ./up.sh
 
 # Assign variables
 SPACE_KEY=$1
