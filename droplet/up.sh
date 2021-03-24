@@ -15,7 +15,7 @@
 #printf "I ${RED}love${NC} Stack Overflow\n"
 
 # EXECUTE MANUALLY
-# sudo apt-get update && sudo apt-get install -y mosh && mkdir /droplet && mkdir /droplet/up && cd /droplet/up && wget https://raw.githubusercontent.com/train-to-cupertino/droplet-up-script/main/droplet/up.sh && chmod +x up.sh && ./up.sh
+# sudo apt-get update && sudo apt-get install -y mosh && mkdir /droplet && mkdir /droplet/up && cd /droplet/up && wget https://raw.githubusercontent.com/train-to-cupertino/droplet-up-script/main/droplet/up.sh && chmod +x up.sh && ./up.sh <PARAMS>
 
 # Assign variables
 SPACE_KEY=$1
@@ -83,8 +83,7 @@ sudo apt-get install -y s3cmd
 # TODO: PUT https://raw.githubusercontent.com/train-to-cupertino/droplet-up-script/main/droplet/.s3cfg 
 # TODO: to /home/$(whoami)/.s3cfg
 # Additional settings
-wget https://raw.githubusercontent.com/train-to-cupertino/droplet-up-script/main/droplet/.s3cfg 
-cp ./.s3cfg ~/.s3cfg
+wget https://raw.githubusercontent.com/train-to-cupertino/droplet-up-script/main/droplet/.s3cfg -O ~/.s3cfg
 echo "access_key = $SPACE_KEY" >> ~/.s3cfg
 echo "secret_key = $SPACE_SECRET" >> ~/.s3cfg
 echo "host_base = $SPACE_HOST" >> ~/.s3cfg
