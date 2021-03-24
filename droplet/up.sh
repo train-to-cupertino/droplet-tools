@@ -15,7 +15,7 @@
 #printf "I ${RED}love${NC} Stack Overflow\n"
 
 # EXECUTE MANUALLY
-# sudo apt-get update && sudo apt-get install -y mosh && mkdir /droplet && mkdir /droplet/up && cd /droplet/up && chmod +x up.sh && ./up.sh
+# sudo apt-get update && sudo apt-get install -y mosh && mkdir /droplet && mkdir /droplet/up && cd /droplet/up && wget https://raw.githubusercontent.com/train-to-cupertino/droplet-up-script/main/droplet/up.sh && chmod +x up.sh && ./up.sh
 
 # Assign variables
 SPACE_KEY=$1
@@ -97,5 +97,5 @@ echo "throttle_max = 100" >> ~/.s3cfg
 chmod 600 ~/.s3cfg
 
 # To test S3
-# mkdir /test-s3 && cd /test-se && s3cmd get s3://wmtw-shard-test-space-1/private/secret.txt && cat secret.txt
+# mkdir /test-s3 && cd /test-s3 && s3cmd get s3://wmtw-shard-test-space-1/private/secret.txt && cat secret.txt
 # 
