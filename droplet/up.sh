@@ -20,11 +20,6 @@ COLOR_BLUE='\033[0;34m'
 COLOR_YELLOW='\033[1;33m'
 NO_COLOR='\033[0m'
 
-printf "Test ${COLOR_RED}red${NO_COLOR} color\n"
-printf "Test ${COLOR_GREEN}green${NO_COLOR} color\n"
-printf "Test ${COLOR_BLUE}blue${NO_COLOR} color\n"
-printf "Test ${COLOR_YELLOW}yellow${NO_COLOR} color\n"
-
 # EXECUTE MANUALLY
 # Install Mosh
 # sudo apt-get update && sudo apt-get install -y mosh 
@@ -96,7 +91,7 @@ echo user_allow_other > /etc/fuse.conf
 chmod 644 /etc/fuse.conf
 sudo s3fs $SPACE_NAME /spaces/$SPACE_NAME -o url=https://$SPACE_ZONE.digitaloceanspaces.com -o use_cache=/tmp -o allow_other -o use_path_request_style -o uid=$(id -u) -o gid=$(id -g)
 
-printf "${COLOR_GREEN}s3fs has been installed, space mounted to /spaces/$SPACE_NAME ${NO_COLOR}\n"
+printf "${COLOR_GREEN}s3fs has been installed${NO_COLOR}, space mounted to ${COLOR_YELLOW}/spaces/$SPACE_NAME ${NO_COLOR}\n"
 
 # TODO: Install s3cmd
 sudo apt-get install -y s3cmd
