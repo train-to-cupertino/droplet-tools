@@ -14,19 +14,32 @@
 #NC='\033[0m' # No Color
 #printf "I ${RED}love${NC} Stack Overflow\n"
 
+COLOR_RED='\033[0;31m'
+COLOR_GREEN='\033[1;32m'
+COLOR_BLUE='\033[0;34m'
+COLOR_YELLOW='\033[1;33m'
+NO_COLOR='\033[0m'
+
+printf "Test ${COLOR_RED}red${NO_COLOR} color\n"
+printf "Test ${COLOR_GREEN}green${NO_COLOR} color\n"
+printf "Test ${COLOR_BLUE}blue${NO_COLOR} color\n"
+printf "Test ${COLOR_YELLOW}yellow${NO_COLOR} color\n"
+
 # EXECUTE MANUALLY
-# sudo apt-get update && sudo apt-get install -y mosh && mkdir /droplet && mkdir /droplet/up && cd /droplet/up && wget https://raw.githubusercontent.com/train-to-cupertino/droplet-up-script/main/droplet/up.sh && chmod +x up.sh && ./up.sh <PARAMS>
+# Install Mosh
+# sudo apt-get update && sudo apt-get install -y mosh 
+# Insert params to up.sh
+# mkdir /droplet && mkdir /droplet/up && cd /droplet/up && wget https://raw.githubusercontent.com/train-to-cupertino/droplet-up-script/main/droplet/up.sh && chmod +x up.sh && ./up.sh <PARAMS>
 
 # Assign variables
 SPACE_KEY=$1
 SPACE_SECRET=$2
-SPACE_NAME=$3 #
+SPACE_NAME=$3 # some-space
 SPACE_ZONE=$4 # fra1 for example
 SPACE_HOST=$5 # fra1.digitaloceanspaces.com for example
 GPG_PASS=$6
 
 # Install Docker
-
 sudo apt-get update
 sudo apt-get install -y \
     apt-transport-https \
@@ -49,6 +62,8 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 
 # docker system prune -f # Delete unused containers
 
+printf "${COLOR_GREEN}Docker has been installed${NO_COLOR}\n"
+
 #Install Docker Compose
 
 sudo apt-get install -y py-pip
@@ -61,8 +76,12 @@ sudo apt-get install -y make
 sudo curl -L "https://github.com/docker/compose/releases/download/1.28.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 
+printf "${COLOR_GREEN}Docker-compose has been installed${NO_COLOR}\n"
+
 # Create network
 docker network create shard
+
+printf "${COLOR_GREEN}Docker network 'shard' has been created${NO_COLOR}\n"
 
 #sudo apt-get install -y py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
 
@@ -76,6 +95,8 @@ sudo mkdir /spaces/$SPACE_NAME
 echo user_allow_other > /etc/fuse.conf
 chmod 644 /etc/fuse.conf
 sudo s3fs $SPACE_NAME /spaces/$SPACE_NAME -o url=https://$SPACE_ZONE.digitaloceanspaces.com -o use_cache=/tmp -o allow_other -o use_path_request_style -o uid=$(id -u) -o gid=$(id -g)
+
+printf "${COLOR_GREEN}s3fs has been installed, space mounted to /spaces/$SPACE_NAME ${NO_COLOR}\n"
 
 # TODO: Install s3cmd
 sudo apt-get install -y s3cmd
@@ -94,6 +115,8 @@ echo "content_type = " >> ~/.s3cfg
 echo "upload_id = " >> ~/.s3cfg
 echo "throttle_max = 100" >> ~/.s3cfg
 chmod 600 ~/.s3cfg
+
+printf "${COLOR_GREEN}s3cmd has been installed${NO_COLOR}\n"
 
 # To test S3
 # mkdir /test-s3 && cd /test-s3 && s3cmd get s3://wmtw-shard-test-space-1/private/secret.txt && cat secret.txt
