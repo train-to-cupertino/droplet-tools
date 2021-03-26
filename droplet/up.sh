@@ -44,7 +44,7 @@ echo "Host $PROJECT_NAME" >> ~/.ssh/config
 echo "HostName github.com" >> ~/.ssh/config
 echo "User git" >> ~/.ssh/config
 echo "IdentityFile ~/.ssh/$PROJECT_NAME/private_key" >> ~/.ssh/config
-echo "UseKeychain yes" >> ~/.ssh/config
+#echo "UseKeychain yes" >> ~/.ssh/config
 echo "AddKeysToAgent yes" >> ~/.ssh/config
 echo "" >> ~/.ssh/config
 eval `ssh-agent -s`
