@@ -21,6 +21,7 @@ NO_COLOR='\033[0m'
 # EXECUTE MANUALLY
 # Install Mosh
 # sudo apt-get update && sudo apt-get install -y mosh 
+# Put private key to file
 # Insert params to up.sh
 # mkdir /droplet && mkdir /droplet/up && cd /droplet/up && wget https://raw.githubusercontent.com/train-to-cupertino/droplet-up-script/main/droplet/up.sh && chmod +x up.sh && ./up.sh <PARAMS>
 
@@ -34,10 +35,10 @@ SPACE_ZONE=$4 # fra1 for example
 SPACE_HOST=$5 # fra1.digitaloceanspaces.com for example
 GPG_PASS=$6
 PROJECT_NAME='wmtw-shard'
-SSH_REPO_PRIVATE_KEY=$7
+#SSH_REPO_PRIVATE_KEY=$7
 
 # Clone repo
-echo $SSH_REPO_PRIVATE_KEY > ~/.ssh/$PROJECT_NAME/private_key
+#echo $SSH_REPO_PRIVATE_KEY > ~/.ssh/$PROJECT_NAME/private_key
 chmod 600 ~/.ssh/$PROJECT_NAME/private_key
 echo "Host $PROJECT_NAME" >> ~/.ssh/config
 echo "HostName github.com" >> ~/.ssh/config
