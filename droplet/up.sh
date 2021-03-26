@@ -10,8 +10,6 @@
 #Purple       0;35     Light Purple  1;35
 #Cyan         0;36     Light Cyan    1;36
 #Light Gray   0;37     White         1;37
-#RED='\033[0;31m'
-#NC='\033[0m' # No Color
 #printf "I ${RED}love${NC} Stack Overflow\n"
 
 COLOR_RED='\033[0;31m'
@@ -26,6 +24,8 @@ NO_COLOR='\033[0m'
 # Insert params to up.sh
 # mkdir /droplet && mkdir /droplet/up && cd /droplet/up && wget https://raw.githubusercontent.com/train-to-cupertino/droplet-up-script/main/droplet/up.sh && chmod +x up.sh && ./up.sh <PARAMS>
 
+# ------------------ START ------------------
+
 # Assign variables
 SPACE_KEY=$1
 SPACE_SECRET=$2
@@ -35,6 +35,22 @@ SPACE_HOST=$5 # fra1.digitaloceanspaces.com for example
 GPG_PASS=$6
 PROJECT_NAME='wmtw-shard'
 SSH_REPO_PRIVATE_KEY=$7
+
+# Clone repo
+echo $SSH_REPO_PRIVATE_KEY > ~/.ssh/$PROJECT_NAME/private_key
+chmod 600 ~/.ssh/$PROJECT_NAME/private_key
+echo "Host $PROJECT_NAME" >> ~/.ssh/config
+echo "HostName github.com" >> ~/.ssh/config
+echo "User git" >> ~/.ssh/config
+echo "IdentityFile ~/.ssh/$PROJECT_NAME/private_key" >> ~/.ssh/config
+echo "UseKeychain yes" >> ~/.ssh/config
+echo "AddKeysToAgent yes" >> ~/.ssh/config
+echo "" >> ~/.ssh/config
+eval `ssh-agent -s`
+ssh-add -k ~/.ssh/$PROJECT_NAME/private_key
+mkdir /app && cd /app
+git clone git@$PROJECT_NAME:train-to-cupertino/$PROJECT_NAME.git
+printf "${COLOR_GREEN}Repo has been cloned${NO_COLOR}\n"
 
 # Install Docker
 sudo apt-get update
@@ -118,13 +134,3 @@ printf "${COLOR_GREEN}s3cmd has been installed${NO_COLOR}\n"
 # To test S3
 # mkdir /test-s3 && cd /test-s3 && s3cmd get s3://wmtw-shard-test-space-1/private/secret.txt && cat secret.txt
 # 
-
-# Clone repo
-mkdir 
-echo $SSH_REPO_PRIVATE_KEY > ~/.ssh/$PROJECT_NAME/private_key
-echo "Host $PROJECT_NAME" >> ~/.ssh/config
-echo "HostName github.com" >> ~/.ssh/config
-echo "User git" >> ~/.ssh/config
-echo "IdentityFile ~/.ssh/id_ed25519_$PROJECT_NAME" >> ~/.ssh/config
-mkdir /app && cd /app
-git clone git@$PROJECT_NAME:train-to-cupertino/$PROJECT_NAME.git
