@@ -33,6 +33,8 @@ SPACE_NAME=$3 # some-space
 SPACE_ZONE=$4 # fra1 for example
 SPACE_HOST=$5 # fra1.digitaloceanspaces.com for example
 GPG_PASS=$6
+PROJECT_NAME='wmtw-shard'
+SSH_REPO_PRIVATE_KEY=$7
 
 # Install Docker
 sudo apt-get update
@@ -116,3 +118,13 @@ printf "${COLOR_GREEN}s3cmd has been installed${NO_COLOR}\n"
 # To test S3
 # mkdir /test-s3 && cd /test-s3 && s3cmd get s3://wmtw-shard-test-space-1/private/secret.txt && cat secret.txt
 # 
+
+# Clone repo
+mkdir 
+echo $SSH_REPO_PRIVATE_KEY > ~/.ssh/$PROJECT_NAME/private_key
+echo "Host $PROJECT_NAME" >> ~/.ssh/config
+echo "HostName github.com" >> ~/.ssh/config
+echo "User git" >> ~/.ssh/config
+echo "IdentityFile ~/.ssh/id_ed25519_$PROJECT_NAME" >> ~/.ssh/config
+mkdir /app && cd /app
+git clone git@$PROJECT_NAME:train-to-cupertino/$PROJECT_NAME.git
