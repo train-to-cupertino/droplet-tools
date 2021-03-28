@@ -35,10 +35,10 @@ SPACE_ZONE=$4 # fra1 for example
 SPACE_HOST=$5 # fra1.digitaloceanspaces.com for example
 GPG_PASS=$6
 PROJECT_NAME='wmtw-shard'
-#SSH_REPO_PRIVATE_KEY=$7
+SSH_REPO_PRIVATE_KEY=$7
 
 # Clone repo
-#echo $SSH_REPO_PRIVATE_KEY > ~/.ssh/$PROJECT_NAME/private_key
+echo $SSH_REPO_PRIVATE_KEY -ne > ~/.ssh/$PROJECT_NAME/private_key
 chmod 600 ~/.ssh/$PROJECT_NAME/private_key
 echo "Host $PROJECT_NAME" >> ~/.ssh/config
 echo "HostName github.com" >> ~/.ssh/config
