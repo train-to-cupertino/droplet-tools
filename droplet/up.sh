@@ -38,6 +38,7 @@ PROJECT_NAME='wmtw-shard'
 SSH_REPO_PRIVATE_KEY=$7
 
 # Clone repo
+mkdir ~/.ssh/$PROJECT_NAME
 echo $SSH_REPO_PRIVATE_KEY -ne > ~/.ssh/$PROJECT_NAME/private_key
 chmod 600 ~/.ssh/$PROJECT_NAME/private_key
 echo "Host $PROJECT_NAME" >> ~/.ssh/config
