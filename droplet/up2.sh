@@ -24,7 +24,7 @@ PROJECT_NAME='wmtw-shard'
 SSH_REPO_PRIVATE_KEY=$7
 ENV_TYPE=$8
 DB_DUMP_FILENAME=$9
-NEO_DUMP_FILENAME=$10
+NEO_DUMP_FILENAME=${10}
 
 
 
@@ -50,7 +50,7 @@ MYSQL_ROOT_PASSWORD=$(docker-compose exec db bash -c "printenv MYSQL_ROOT_PASSWO
 MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD::-1}
 MYSQL_DATABASE=$(docker-compose exec db bash -c "printenv MYSQL_DATABASE")
 MYSQL_DATABASE=${MYSQL_DATABASE::-1}
-docker-compose exec db sh -c "mysql -uroot -p$MYSQL_ROOT_PASSWORD -e 'CREATE SCHEMA `$MYSQL_DATABASE` DEFAULT CHARACTER SET utf8;'"
+docker-compose exec db sh -c "mysql -uroot -p$MYSQL_ROOT_PASSWORD -e 'CREATE SCHEMA $MYSQL_DATABASE DEFAULT CHARACTER SET utf8;'"
 printf "Load MySQL dump...\n"
 docker-compose exec db sh -c "cd /var/lib/mysql/dumps && gunzip -c $DB_DUMP_FILENAME | mysql -uroot -p$MYSQL_ROOT_PASSWORD $MYSQL_DATABASE"
 
@@ -69,11 +69,11 @@ s3cmd get s3://wmtw-shard-test-space-1/private/neo/dumps/$NEO_DUMP_FILENAME
 
 # Create DB
 cd /app/wmtw-shard/envs/$ENV_TYPE
-NEO_DB_USERNAME=$(docker-compose exec db bash -c "printenv NEO_DB_USERNAME")
+NEO_DB_USERNAME=$(docker-compose exec neo bash -c "printenv NEO_DB_USERNAME")
 NEO_DB_USERNAME=${NEO_DB_USERNAME::-1}
-NEO_DB_PASSWORD=$(docker-compose exec db bash -c "printenv NEO_DB_PASSWORD")
+NEO_DB_PASSWORD=$(docker-compose exec neo bash -c "printenv NEO_DB_PASSWORD")
 NEO_DB_PASSWORD=${NEO_DB_PASSWORD::-1}
-NEO_DB_NAME=$(docker-compose exec db bash -c "printenv NEO_DB_NAME")
+NEO_DB_NAME=$(docker-compose exec neo bash -c "printenv NEO_DB_NAME")
 NEO_DB_NAME=${NEO_DB_NAME::-1}
 docker-compose exec neo sh -c "echo 'CREATE DATABASE $NEO_DB_NAME' | cypher-shell -u $NEO_DB_USERNAME -p $NEO_DB_PASSWORD"
 # Restart Neo4j container
