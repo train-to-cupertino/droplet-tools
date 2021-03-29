@@ -50,7 +50,7 @@ MYSQL_ROOT_PASSWORD=$(docker-compose exec db bash -c "printenv MYSQL_ROOT_PASSWO
 MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD::-1}
 MYSQL_DATABASE=$(docker-compose exec db bash -c "printenv MYSQL_DATABASE")
 MYSQL_DATABASE=${MYSQL_DATABASE::-1}
-docker-compose exec db sh -c "mysql -uroot -p$MYSQL_ROOT_PASSWORD -e 'CREATE SCHEMA $MYSQL_DATABASE DEFAULT CHARACTER SET utf8;'"
+#docker-compose exec db sh -c "mysql -uroot -p$MYSQL_ROOT_PASSWORD -e 'CREATE SCHEMA $MYSQL_DATABASE DEFAULT CHARACTER SET utf8;'" # DB creates automatically
 printf "Load MySQL dump...\n"
 docker-compose exec db sh -c "cd /var/lib/mysql/dumps && gunzip -c $DB_DUMP_FILENAME | mysql -uroot -p$MYSQL_ROOT_PASSWORD $MYSQL_DATABASE"
 
