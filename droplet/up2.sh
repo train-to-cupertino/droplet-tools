@@ -97,3 +97,4 @@ docker-compose up -d neo
 # Load Neo4j dump
 printf "Load Neo4j dump...\n"
 docker-compose exec neo sh -c "neo4j-admin load --verbose --from=/data/neo/data/dumps/$NEO_DUMP_FILENAME --database=$NEO_DB_NAME --force"
+#
