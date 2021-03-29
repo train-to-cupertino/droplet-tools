@@ -25,16 +25,24 @@ SSH_REPO_PRIVATE_KEY=$7
 ENV_TYPE=$8
 DB_DUMP_FILENAME=$9
 NEO_DUMP_FILENAME=${10}
+APP_IMAGE_FILE=${11}
 
 
 
+
+# Get app docker image
+mkdir /data
+mkdir /data/docker_images
+cd /data/docker_images
+s3cmd get s3://wmtw-shard-test-space-1/private/docker-images/shard/app/$APP_IMAGE_FILE
+docker load -i shard_app_test__latest.tgz
 
 cd /app/wmtw-shard
 git checkout develop
 
 # Deploy MySQL data
 # Create MySQL data folder
-mkdir /data && mkdir /data/mysql
+mkdir /data/mysql
 cd /app/wmtw-shard/envs/$ENV_TYPE
 # Up DB container
 docker-compose up -d db
@@ -61,6 +69,7 @@ mkdir /data/neo
 cd /app/wmtw-shard/envs/$ENV_TYPE
 # Up Neo4j container
 docker-compose up -d neo
+docker-compose up -d app
 
 # Download dump
 docker-compose exec neo sh -c "mkdir /data/dumps"
@@ -69,11 +78,11 @@ s3cmd get s3://wmtw-shard-test-space-1/private/neo/dumps/$NEO_DUMP_FILENAME
 
 # Create DB
 cd /app/wmtw-shard/envs/$ENV_TYPE
-NEO_DB_USERNAME=$(docker-compose exec neo bash -c "printenv NEO_DB_USERNAME")
+NEO_DB_USERNAME=$(docker-compose exec app bash -c "printenv NEO_DB_USERNAME")
 NEO_DB_USERNAME=${NEO_DB_USERNAME::-1}
-NEO_DB_PASSWORD=$(docker-compose exec neo bash -c "printenv NEO_DB_PASSWORD")
+NEO_DB_PASSWORD=$(docker-compose exec app bash -c "printenv NEO_DB_PASSWORD")
 NEO_DB_PASSWORD=${NEO_DB_PASSWORD::-1}
-NEO_DB_NAME=$(docker-compose exec neo bash -c "printenv NEO_DB_NAME")
+NEO_DB_NAME=$(docker-compose exec neo app -c "printenv NEO_DB_NAME")
 NEO_DB_NAME=${NEO_DB_NAME::-1}
 docker-compose exec neo sh -c "echo 'CREATE DATABASE $NEO_DB_NAME' | cypher-shell -u $NEO_DB_USERNAME -p $NEO_DB_PASSWORD"
 # Restart Neo4j container
@@ -81,4 +90,4 @@ docker-compose stop neo
 docker-compose up -d neo
 # Load Neo4j dump
 printf "Load Neo4j dump...\n"
-docker-compose exec neo sh -c "neo4j-admin load --from=$NEO_DUMP_FILENAME --database=$NEO_DB_NAME --force"
+docker-compose exec neo sh -c "neo4j-admin load --verbose --from=$NEO_DUMP_FILENAME --database=$NEO_DB_NAME --force"
