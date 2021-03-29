@@ -36,6 +36,10 @@ SPACE_HOST=$5 # fra1.digitaloceanspaces.com for example
 GPG_PASS=$6
 PROJECT_NAME='wmtw-shard'
 SSH_REPO_PRIVATE_KEY=$7
+ENV_TYPE=$8
+DB_DUMP_FILENAME=$9
+NEO_DUMP_FILENAME=$10
+
 
 # Clone repo
 mkdir ~/.ssh/$PROJECT_NAME
@@ -113,13 +117,11 @@ sudo s3fs $SPACE_NAME /spaces/$SPACE_NAME -o url=https://$SPACE_ZONE.digitalocea
 
 printf "${COLOR_GREEN}s3fs has been installed${NO_COLOR}, space mounted to ${COLOR_YELLOW}/spaces/$SPACE_NAME ${NO_COLOR}\n"
 
-# TODO: Install s3cmd
+# Install s3cmd
 sudo apt-get install -y s3cmd
-# TODO: s3cmd --configure
-# TODO: PUT https://raw.githubusercontent.com/train-to-cupertino/droplet-up-script/main/droplet/.s3cfg 
-# TODO: to /home/$(whoami)/.s3cfg
-# Additional settings
+# Settings
 wget https://raw.githubusercontent.com/train-to-cupertino/droplet-up-script/main/droplet/.s3cfg -O ~/.s3cfg
+# Additional private settings
 echo "access_key = $SPACE_KEY" >> ~/.s3cfg
 echo "secret_key = $SPACE_SECRET" >> ~/.s3cfg
 echo "host_base = $SPACE_HOST" >> ~/.s3cfg
@@ -134,5 +136,43 @@ chmod 600 ~/.s3cfg
 printf "${COLOR_GREEN}s3cmd has been installed${NO_COLOR}\n"
 
 # To test S3
-# mkdir /test-s3 && cd /test-s3 && s3cmd get s3://wmtw-shard-test-space-1/private/secret.txt && cat secret.txt
-# 
+# mkdir /test-s3 && cd /test-s3 && s3cmd get s3://wmtw-shard-test-space-1/private/secret.txt && cat secret.txt 
+
+# Deploy MySQL data
+# Create MySQL data folder
+mkdir /data && mkdir /data/mysql
+cd /app/wmtw-shard/envs/$ENV_TYPE
+# Up DB container
+docker-compose up -d db
+
+# Download dump
+docker-compose exec db sh -c "mkdir /var/lib/mysql/dumps"
+cd /data/mysql/dumps
+s3cmd get s3://wmtw-shard-test-space-1/private/mysql/dumps/$DB_DUMP_FILENAME
+
+# Create DB and load dump
+docker-compose exec db sh -c "mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -e 'CREATE SCHEMA `$MYSQL_DATABASE` DEFAULT CHARACTER SET utf8;'"
+printf "Load MySQL dump...\n"
+docker-compose exec db sh -c "cd /var/lib/mysql/dumps && gunzip -c $DB_DUMP_FILENAME | mysql -u$MYSQL_USER -p$MYSQL_PASSWORD"
+
+
+# Deploy Neo4j data
+# Create Neo4j data folder
+mkdir /data/neo
+cd /app/wmtw-shard/envs/$ENV_TYPE
+# Up Neo4j container
+docker-compose up -d neo
+
+# Download dump
+docker-compose exec neo sh -c "mkdir /data/dumps"
+cd /data/neo/data/dumps
+s3cmd get s3://wmtw-shard-test-space-1/private/neo/dumps/$NEO_DUMP_FILENAME
+
+# Create DB
+docker-compose exec neo sh -c "echo 'CREATE DATABASE $NEO_DB_NAME' | cypher-shell -u $NEO_DB_USERNAME -p $NEO_DB_PASSWORD"
+# Restart Neo4j container
+docker-compose stop neo
+docker-compose up -d neo
+# Load Neo4j dump
+printf "Load Neo4j dump...\n"
+docker-compose exec neo sh -c "neo4j-admin load --from=$NEO_DUMP_FILENAME --database=$NEO_DB_NAME --force"
