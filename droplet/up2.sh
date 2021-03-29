@@ -60,7 +60,7 @@ MYSQL_DATABASE=$(docker-compose exec db bash -c "printenv MYSQL_DATABASE")
 MYSQL_DATABASE=${MYSQL_DATABASE::-1}
 #docker-compose exec db sh -c "mysql -uroot -p$MYSQL_ROOT_PASSWORD -e 'CREATE SCHEMA $MYSQL_DATABASE DEFAULT CHARACTER SET utf8;'" # DB creates automatically
 printf "Load MySQL dump...\n"
-docker-compose exec db sh -c "cd /var/lib/mysql/dumps && gunzip -c $DB_DUMP_FILENAME | mysql -uroot -p$MYSQL_ROOT_PASSWORD $MYSQL_DATABASE"
+# ! ! ! UNCOMMENT ! ! ! docker-compose exec db sh -c "cd /var/lib/mysql/dumps && gunzip -c $DB_DUMP_FILENAME | mysql -uroot -p$MYSQL_ROOT_PASSWORD $MYSQL_DATABASE"
 
 
 # Deploy Neo4j data
@@ -69,6 +69,12 @@ mkdir /data/neo
 cd /app/wmtw-shard/envs/$ENV_TYPE
 # Up Neo4j container
 docker-compose up -d neo
+
+# Create ES data folder
+mkdir /data/es
+chmod -R 777 /data/es
+
+# Up app container
 docker-compose up -d app
 
 # Download dump
