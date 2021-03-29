@@ -88,7 +88,7 @@ NEO_DB_USERNAME=$(docker-compose exec app bash -c "printenv NEO_DB_USERNAME")
 NEO_DB_USERNAME=${NEO_DB_USERNAME::-1}
 NEO_DB_PASSWORD=$(docker-compose exec app bash -c "printenv NEO_DB_PASSWORD")
 NEO_DB_PASSWORD=${NEO_DB_PASSWORD::-1}
-NEO_DB_NAME=$(docker-compose exec neo app -c "printenv NEO_DB_NAME")
+NEO_DB_NAME=$(docker-compose exec app bash -c "printenv NEO_DB_NAME")
 NEO_DB_NAME=${NEO_DB_NAME::-1}
 docker-compose exec neo sh -c "echo 'CREATE DATABASE $NEO_DB_NAME' | cypher-shell -u $NEO_DB_USERNAME -p $NEO_DB_PASSWORD"
 # Restart Neo4j container
