@@ -44,6 +44,10 @@ docker-compose exec db sh -c "mkdir /var/lib/mysql/dumps"
 cd /data/mysql/dumps
 s3cmd get s3://wmtw-shard-test-space-1/private/mysql/dumps/$DB_DUMP_FILENAME
 
+MYSQL_USER=$(docker-compose exec db bash -c "printenv MYSQL_USER")
+MYSQL_PASSWORD=$(docker-compose exec db bash -c "printenv MYSQL_PASSWORD")
+MYSQL_DATABASE=$(docker-compose exec db bash -c "printenv MYSQL_DATABASE")
+
 # Create DB and load dump
 cd /app/wmtw-shard/envs/$ENV_TYPE
 docker-compose exec db sh -c "mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -e 'CREATE SCHEMA `$MYSQL_DATABASE` DEFAULT CHARACTER SET utf8;'"
@@ -62,6 +66,10 @@ docker-compose up -d neo
 docker-compose exec neo sh -c "mkdir /data/dumps"
 cd /data/neo/data/dumps
 s3cmd get s3://wmtw-shard-test-space-1/private/neo/dumps/$NEO_DUMP_FILENAME
+
+NEO_DB_USERNAME=$(docker-compose exec db bash -c "printenv NEO_DB_USERNAME")
+NEO_DB_PASSWORD=$(docker-compose exec db bash -c "printenv NEO_DB_PASSWORD")
+NEO_DB_NAME=$(docker-compose exec db bash -c "printenv NEO_DB_NAME")
 
 # Create DB
 cd /app/wmtw-shard/envs/$ENV_TYPE
