@@ -29,6 +29,9 @@ NEO_DUMP_FILENAME=$10
 
 
 
+cd /app/wmtw-shard
+git checkout develop
+
 # Deploy MySQL data
 # Create MySQL data folder
 mkdir /data && mkdir /data/mysql
