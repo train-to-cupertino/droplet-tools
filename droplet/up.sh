@@ -227,3 +227,7 @@ docker-compose exec app bash -c "php /app/console/yii es/reindex movies"
 docker-compose exec app bash -c "php /app/console/yii es/reindex tvs"
 docker-compose exec app bash -c "php /app/console/yii es/reindex people"
 docker-compose exec app bash -c "php /app/console/yii es/reindex name-translations"
+
+# Assets and runtime folders
+docker-compose exec app bash -c "mkdir /app/frontend/runtime && chmod -R 777 /app/frontend/runtime"
+docker-compose exec app bash -c "mkdir /app/frontend/web/assets && chmod -R 777 /app/frontend/web/assets"
