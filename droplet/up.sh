@@ -186,6 +186,9 @@ chmod -R 777 /data/es
 
 # Up app container
 docker-compose up -d app
+# Up all one more time
+docker-compose up -d
+
 
 # Download dump
 docker-compose exec neo sh -c "mkdir /data/dumps"
