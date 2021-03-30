@@ -213,3 +213,17 @@ docker-compose up -d neo
 # Load Neo4j dump
 printf "Load Neo4j dump...\n"
 docker-compose exec neo sh -c "neo4j-admin load --verbose --from=/data/dumps/$NEO_DUMP_FILENAME --database=$NEO_DB_NAME --force"
+
+# Create indices
+docker-compose exec app bash -c "php /app/console/yii es/mark create-index"
+docker-compose exec app bash -c "php /app/console/yii es/movie create-index"
+docker-compose exec app bash -c "php /app/console/yii es/tv create-index"
+docker-compose exec app bash -c "php /app/console/yii es/person create-index"
+docker-compose exec app bash -c "php /app/console/yii es/name-translation create-index"
+
+# Reindex data
+docker-compose exec app bash -c "php /app/console/yii es/reindex marks"
+docker-compose exec app bash -c "php /app/console/yii es/reindex movies"
+docker-compose exec app bash -c "php /app/console/yii es/reindex tvs"
+docker-compose exec app bash -c "php /app/console/yii es/reindex people"
+docker-compose exec app bash -c "php /app/console/yii es/reindex name-translations"
