@@ -231,3 +231,7 @@ docker-compose exec app bash -c "php /app/console/yii es/reindex name-translatio
 # Assets and runtime folders
 docker-compose exec app bash -c "mkdir /app/frontend/runtime && chmod -R 777 /app/frontend/runtime"
 docker-compose exec app bash -c "mkdir /app/frontend/web/assets && chmod -R 777 /app/frontend/web/assets"
+
+# Restart Neo4j container
+docker-compose stop neo
+docker-compose up -d neo
