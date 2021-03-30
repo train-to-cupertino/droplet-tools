@@ -18,6 +18,9 @@ COLOR_BLUE='\033[0;34m'
 COLOR_YELLOW='\033[1;33m'
 NO_COLOR='\033[0m'
 
+export DOCKER_CLIENT_TIMEOUT=120
+export COMPOSE_HTTP_TIMEOUT=120
+
 # EXECUTE MANUALLY
 # Install Mosh
 # sudo apt-get update && sudo apt-get install -y mosh 
