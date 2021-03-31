@@ -232,6 +232,15 @@ docker-compose exec app bash -c "php /app/console/yii es/reindex name-translatio
 docker-compose exec app bash -c "mkdir /app/frontend/runtime && chmod -R 777 /app/frontend/runtime"
 docker-compose exec app bash -c "mkdir /app/frontend/web/assets && chmod -R 777 /app/frontend/web/assets"
 
+docker-compose exec app bash -c "mkdir /app/backend/runtime && chmod -R 777 /app/backend/runtime"
+docker-compose exec app bash -c "mkdir /app/backend/web/assets && chmod -R 777 /app/backend/web/assets"
+
+docker-compose exec app bash -c "mkdir /app/storage/runtime && chmod -R 777 /app/storage/runtime"
+docker-compose exec app bash -c "mkdir /app/storage/web/assets && chmod -R 777 /app/storage/web/assets"
+
+#curl -XPUT "http://localhost:9200/_all/_settings" -d '{ "index" : { "max_result_window" : 500000 } }' -H "Content-Type: application/json"
+docker-compose exec app bash -c "curl -XPUT \"http://es:9200/_all/_settings\" -d \"{ '\''index'\'' : { '\''max_result_window'\'' : 500000 } }\" -H \"Content-Type: application/json\""
+
 # Restart Neo4j container
 docker-compose stop neo
 docker-compose up -d neo
