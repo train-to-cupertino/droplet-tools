@@ -147,7 +147,7 @@ mkdir /data
 mkdir /data/docker_images
 cd /data/docker_images
 s3cmd get s3://wmtw-shard-test-space-1/private/docker-images/shard/app/$APP_IMAGE_FILE
-docker load -i shard_app_test__latest.tgz
+docker load -i $APP_IMAGE_FILE
 
 cd /app/wmtw-shard
 git checkout develop
