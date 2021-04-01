@@ -237,6 +237,7 @@ docker-compose exec app bash -c "mkdir /app/backend/web/assets && chmod -R 777 /
 
 docker-compose exec app bash -c "mkdir /app/storage/runtime && chmod -R 777 /app/storage/runtime"
 docker-compose exec app bash -c "mkdir /app/storage/web/assets && chmod -R 777 /app/storage/web/assets"
+docker-compose exec app bash -c "chmod -R 777 /app/storage/web/source"
 
 docker-compose exec app bash -c "mkdir /app/api/runtime && chmod -R 777 /app/api/runtime"
 docker-compose exec app bash -c "mkdir /app/api/web/assets && chmod -R 777 /app/api/web/assets"
