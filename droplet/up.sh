@@ -25,6 +25,25 @@ export COMPOSE_HTTP_TIMEOUT=120
 # Install Mosh
 # sudo apt-get update && sudo apt-get install -y mosh 
 # Put private key to file
+# Create "gitlab" user
+# adduser gitlab
+
+# let the user access with a key
+### ssh-keygen
+### ssh-copy-id gitlab@10.10.10.1
+# install docker, setup docker-compose
+### curl -fsSL https://get.docker.com -o get-docker.sh
+### sudo sh get-docker.sh
+### sudo usermod -aG docker gitlab
+### systemctl start docker
+# install compose
+### sudo curl -L "https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+### sudo chmod +x /usr/local/bin/docker-compose
+# allow multiple sessions (while deployment here will be lots of non blocking operations)
+### sudo vi /etc/ssh/sshd_config 
+### - MaxSessions 128
+### sudo systemctl restart sshd
+
 # Insert params to up.sh
 # mkdir /droplet && mkdir /droplet/up && cd /droplet/up && wget https://raw.githubusercontent.com/train-to-cupertino/droplet-up-script/main/droplet/up.sh && chmod +x up.sh && ./up.sh <PARAMS>
 
