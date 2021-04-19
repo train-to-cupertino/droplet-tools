@@ -22,11 +22,17 @@ export DOCKER_CLIENT_TIMEOUT=120
 export COMPOSE_HTTP_TIMEOUT=120
 
 # EXECUTE MANUALLY
-# Install Mosh
+#  Install Mosh
 # sudo apt-get update && sudo apt-get install -y mosh 
-# Put private key to file
-# Create "gitlab" user
+#  Put private key to file
+#   Create "gitlab" user
 # adduser gitlab
+# sudo -u gitlab -s
+# mkdir ~/.ssh
+# echo "<GITLAB_USER_PUBLIC_KEY>" >> ~/.ssh/authorized_keys
+#   Make sure the permissions and ownership of the files are correct.
+# chmod -R go= ~/.ssh
+# chown -R $USER:$USER ~/.ssh
 
 # let the user access with a key
 ### ssh-keygen
@@ -248,20 +254,29 @@ docker-compose exec app bash -c "php /app/console/yii es/reindex people"
 docker-compose exec app bash -c "php /app/console/yii es/reindex name-translations"
 
 # Assets and runtime folders
-docker-compose exec app bash -c "mkdir /app/frontend/runtime && chmod -R 777 /app/frontend/runtime"
-docker-compose exec app bash -c "mkdir /app/frontend/web/assets && chmod -R 777 /app/frontend/web/assets"
+docker-compose exec app bash -c "mkdir /app/frontend/runtime"
+docker-compose exec app bash -c "chmod -R 777 /app/frontend/runtime"
+docker-compose exec app bash -c "mkdir /app/frontend/web/assets"
+docker-compose exec app bash -c "chmod -R 777 /app/frontend/web/assets"
 
-docker-compose exec app bash -c "mkdir /app/backend/runtime && chmod -R 777 /app/backend/runtime"
-docker-compose exec app bash -c "mkdir /app/backend/web/assets && chmod -R 777 /app/backend/web/assets"
+docker-compose exec app bash -c "mkdir /app/backend/runtime"
+docker-compose exec app bash -c "chmod -R 777 /app/backend/runtime"
+docker-compose exec app bash -c "mkdir /app/backend/web/assets"
+docker-compose exec app bash -c "chmod -R 777 /app/backend/web/assets"
 
-docker-compose exec app bash -c "mkdir /app/storage/runtime && chmod -R 777 /app/storage/runtime"
-docker-compose exec app bash -c "mkdir /app/storage/web/assets && chmod -R 777 /app/storage/web/assets"
+docker-compose exec app bash -c "mkdir /app/storage/runtime"
+docker-compose exec app bash -c "chmod -R 777 /app/storage/runtime"
+docker-compose exec app bash -c "mkdir /app/storage/web/assets"
+docker-compose exec app bash -c "chmod -R 777 /app/storage/web/assets"
 docker-compose exec app bash -c "chmod -R 777 /app/storage/web/source"
 
-docker-compose exec app bash -c "mkdir /app/api/runtime && chmod -R 777 /app/api/runtime"
-docker-compose exec app bash -c "mkdir /app/api/web/assets && chmod -R 777 /app/api/web/assets"
+docker-compose exec app bash -c "mkdir /app/api/runtime"
+docker-compose exec app bash -c "chmod -R 777 /app/api/runtime"
+docker-compose exec app bash -c "mkdir /app/api/web/assets"
+docker-compose exec app bash -c "chmod -R 777 /app/api/web/assets"
 
-docker-compose exec app bash -c "mkdir /app/common/runtime && chmod -R 777 /app/common/runtime"
+docker-compose exec app bash -c "mkdir /app/common/runtime"
+docker-compose exec app bash -c "chmod -R 777 /app/common/runtime"
 
 # TODO: docker-compose exec app bash -c "curl -XPUT "http://localhost:9200/_all/_settings" -d '{ "index" : { "max_result_window" : 500000 } }' -H "Content-Type: application/json""
 curl -XPUT "http://localhost:9200/_all/_settings" -d '{ "index" : { "max_result_window" : 500000 } }' -H "Content-Type: application/json"
