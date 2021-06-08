@@ -200,26 +200,22 @@ printf "Load MySQL dump...\n"
  # ! ! ! UNCOMMENT ! ! ! 
 docker-compose exec db sh -c "cd /var/lib/mysql/dumps && gunzip -c $DB_DUMP_FILENAME | mysql -uroot -p$MYSQL_ROOT_PASSWORD $MYSQL_DATABASE"
 
-# Create ES data folder
-mkdir /data/es
-chmod -R 777 /data/es
-
 # Up app container
-docker-compose up -d app
+#docker-compose up -d app
 # Up all one more time
-docker-compose up -d
+#docker-compose up -d
 
 # Assets and runtime folders
-docker-compose exec app bash -c "mkdir /app/backend/runtime"
-docker-compose exec app bash -c "chmod -R 777 /app/backend/runtime"
-docker-compose exec app bash -c "mkdir /app/backend/web/assets"
-docker-compose exec app bash -c "chmod -R 777 /app/backend/web/assets"
+#docker-compose exec app bash -c "mkdir /app/backend/runtime"
+#docker-compose exec app bash -c "chmod -R 777 /app/backend/runtime"
+#docker-compose exec app bash -c "mkdir /app/backend/web/assets"
+#docker-compose exec app bash -c "chmod -R 777 /app/backend/web/assets"
 
-docker-compose exec app bash -c "mkdir /app/storage/runtime"
-docker-compose exec app bash -c "chmod -R 777 /app/storage/runtime"
-docker-compose exec app bash -c "mkdir /app/storage/web/assets"
-docker-compose exec app bash -c "chmod -R 777 /app/storage/web/assets"
-docker-compose exec app bash -c "chmod -R 777 /app/storage/web/source"
+#docker-compose exec app bash -c "mkdir /app/storage/runtime"
+#docker-compose exec app bash -c "chmod -R 777 /app/storage/runtime"
+#docker-compose exec app bash -c "mkdir /app/storage/web/assets"
+#docker-compose exec app bash -c "chmod -R 777 /app/storage/web/assets"
+#docker-compose exec app bash -c "chmod -R 777 /app/storage/web/source"
 
-docker-compose exec app bash -c "mkdir /app/common/runtime"
-docker-compose exec app bash -c "chmod -R 777 /app/common/runtime"
+#docker-compose exec app bash -c "mkdir /app/common/runtime"
+#docker-compose exec app bash -c "chmod -R 777 /app/common/runtime"
