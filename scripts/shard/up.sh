@@ -51,7 +51,7 @@ export COMPOSE_HTTP_TIMEOUT=120
 ### sudo systemctl restart sshd
 
 # Insert params to up.sh
-# mkdir /droplet && mkdir /droplet/up && cd /droplet/up && wget https://raw.githubusercontent.com/train-to-cupertino/droplet-up-script/main/droplet/up.sh && chmod +x up.sh && ./up.sh <PARAMS>
+# mkdir /droplet && mkdir /droplet/up && cd /droplet/up && wget https://raw.githubusercontent.com/train-to-cupertino/droplet-tools/main/scripts/shard/up.sh && chmod +x up.sh && ./up.sh <PARAMS>
 
 # ------------------ START ------------------
 
@@ -149,7 +149,7 @@ printf "${COLOR_GREEN}s3fs has been installed${NO_COLOR}, space mounted to ${COL
 # Install s3cmd
 sudo apt-get install -y s3cmd
 # Settings
-wget https://raw.githubusercontent.com/train-to-cupertino/droplet-up-script/main/droplet/.s3cfg -O ~/.s3cfg
+wget https://raw.githubusercontent.com/train-to-cupertino/droplet-tools/main/cfg/.s3cfg -O ~/.s3cfg
 # Additional private settings
 echo "access_key = $SPACE_KEY" >> ~/.s3cfg
 echo "secret_key = $SPACE_SECRET" >> ~/.s3cfg
@@ -174,13 +174,13 @@ cd /data/docker_images
 s3cmd get s3://wmtw-shard-test-space-1/private/docker-images/shard/app/$APP_IMAGE_FILE
 docker load -i $APP_IMAGE_FILE
 
-cd /app/wmtw-shard
+cd /app/$PROJECT_NAME
 git checkout develop
 
 # Deploy MySQL data
 # Create MySQL data folder
 mkdir /data/mysql
-cd /app/wmtw-shard/envs/$ENV_TYPE
+cd /app/$PROJECT_NAME/envs/$ENV_TYPE
 # Up DB container
 docker-compose up -d db
 
@@ -190,7 +190,7 @@ cd /data/mysql/dumps
 s3cmd get s3://wmtw-shard-test-space-1/private/mysql/dumps/$DB_DUMP_FILENAME
 
 # Create DB and load dump
-cd /app/wmtw-shard/envs/$ENV_TYPE
+cd /app/$PROJECT_NAME/envs/$ENV_TYPE
 MYSQL_ROOT_PASSWORD=$(docker-compose exec db bash -c "printenv MYSQL_ROOT_PASSWORD")
 MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD::-1}
 MYSQL_DATABASE=$(docker-compose exec db bash -c "printenv MYSQL_DATABASE")
@@ -204,7 +204,7 @@ docker-compose exec db sh -c "cd /var/lib/mysql/dumps && gunzip -c $DB_DUMP_FILE
 # Deploy Neo4j data
 # Create Neo4j data folder
 mkdir /data/neo
-cd /app/wmtw-shard/envs/$ENV_TYPE
+cd /app/$PROJECT_NAME/envs/$ENV_TYPE
 # Up Neo4j container
 docker-compose up -d neo
 
@@ -224,7 +224,7 @@ cd /data/neo/data/dumps
 s3cmd get s3://wmtw-shard-test-space-1/private/neo/dumps/$NEO_DUMP_FILENAME
 
 # Create DB
-cd /app/wmtw-shard/envs/$ENV_TYPE
+cd /app/$PROJECT_NAME/envs/$ENV_TYPE
 NEO_DB_USERNAME=$(docker-compose exec app bash -c "printenv NEO_DB_USERNAME")
 NEO_DB_USERNAME=${NEO_DB_USERNAME::-1}
 NEO_DB_PASSWORD=$(docker-compose exec app bash -c "printenv NEO_DB_PASSWORD")
