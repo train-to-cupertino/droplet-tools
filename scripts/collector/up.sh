@@ -171,6 +171,7 @@ printf "${COLOR_GREEN}s3cmd has been installed${NO_COLOR}\n"
 mkdir /data
 mkdir /data/docker_images
 cd /data/docker_images
+chmod 777 /data/docker_images
 s3cmd get s3://wmtw-shard-test-space-1/private/docker-images/shard/app/$APP_IMAGE_FILE
 docker load -i $APP_IMAGE_FILE
 
