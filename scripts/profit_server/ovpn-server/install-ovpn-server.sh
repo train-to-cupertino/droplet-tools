@@ -6,7 +6,7 @@ VPN_DATA_FOLDER=$3 # VPN data folder name, for example: ovpndata
 
 cd ~
 # Install Docker
-./../common/install-docker.sh# Clonning "Dockerized OpenVPN server" repository  
+./../common/install-docker.sh # Clonning "Dockerized OpenVPN server" repository  
 git clone https://github.com/kylemanna/docker-openvpn.git
 cd docker-openvpn/
 # Build Docker image
