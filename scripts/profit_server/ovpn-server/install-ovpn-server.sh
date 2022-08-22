@@ -1,5 +1,5 @@
 # Define variables
-SERVER_ADDRES=$(wget -q -O - eth0.me) # We get IP address of server using "eth0.me" service
+SERVER_ADDRESS=$(wget -q -O - eth0.me) # We get IP address of server using "eth0.me" service
 SERVER_PORT=$1 # Server port. For example, 3000
 DOCKER_IMAGE_NAME=$2 # Docker image name, for example: myownvpn
 VPN_DATA_FOLDER=$3 # VPN data folder name, for example: ovpndata
@@ -13,7 +13,7 @@ docker build -t $DOCKER_IMAGE_NAME .
 cd ..
 mkdir $VPN_DATA_FOLDER && touch $VPN_DATA_FOLDER/vars
 # Run Docker container
-docker run -v $PWD/$VPN_DATA_FOLDER:/etc/openvpn --rm $DOCKER_IMAGE_NAME ovpn_genconfig -u udp://$SERVER_ADDRESS:SERVER_PORT 
+docker run -v $PWD/$VPN_DATA_FOLDER:/etc/openvpn --rm $DOCKER_IMAGE_NAME ovpn_genconfig -u udp://$SERVER_ADDRESS:$SERVER_PORT 
 # Init PKI
 docker run -v $PWD/$VPN_DATA_FOLDER:/etc/openvpn --rm -it $DOCKER_IMAGE_NAME ovpn_initpki # input needed data
 # Run VPN server
