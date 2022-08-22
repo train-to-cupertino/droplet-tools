@@ -4,7 +4,6 @@ SERVER_PORT=$1 # Server port. For example, 3000
 DOCKER_IMAGE_NAME=$2 # Docker image name, for example: myownvpn
 VPN_DATA_FOLDER=$3 # VPN data folder name, for example: ovpndata
 
-cd ~
 # Install Docker
 ./../common/install-docker.sh # Clonning "Dockerized OpenVPN server" repository  
 git clone https://github.com/kylemanna/docker-openvpn.git
