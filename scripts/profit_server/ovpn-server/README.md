@@ -23,13 +23,18 @@ sudo apt-get install -y git
 git clone https://github.com/train-to-cupertino/droplet-tools.git
 ```
 
+```
+cd droplet-tools/scripts/profit_server/ovpn-server/
+chmod +x install-ovpn-server.sh add-ovpn-user.sh ./../common/install-docker.sh
+```
+
 Run scripts:
 * Run "Install and configure dockerized OpenVPN server" script. For example:
 ```
-chmod +x ./droplet-tools/scripts/profit_server/ovpn-server/install-ovpn-server.sh && ./droplet-tools/scripts/profit_server/ovpn-server/install-ovpn-server.sh 3000 myownvpn ovpndata
+./install-ovpn-server.sh 3000 myownvpn ovpndata
 ```
 
 * Run "Add OpenVPN user" script: scripts/profit_server/ovpn-server/add-ovpn-user.sh. For example:
 ```
-chmod +x ./droplet-tools/scripts/profit_server/ovpn-server/add-ovpn-user.sh && ./droplet-tools/scripts/profit_server/ovpn-server/add-ovpn-user.sh myownvpn ovpndata user1
+./add-ovpn-user.sh myownvpn ovpndata user1
 ```
