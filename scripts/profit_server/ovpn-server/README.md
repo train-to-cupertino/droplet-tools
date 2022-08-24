@@ -39,7 +39,12 @@ Run scripts:
 ./add-ovpn-user.sh myownvpn ovpndata user1
 ```
 
-* Run LOCALLY to download user config file
+Run LOCALLY to download user config file
 ```
 scp root@<SERVER_IP>:/path/to/FILENAME.ovpn ~
+```
+
+Run LOCALLY to start vpn connection
+```
+sudo openvpn --config FILENAME.ovpn
 ```
