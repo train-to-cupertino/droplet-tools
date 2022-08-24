@@ -38,3 +38,8 @@ Run scripts:
 ```
 ./add-ovpn-user.sh myownvpn ovpndata user1
 ```
+
+* Run LOCALLY to download user config file
+```
+scp root@<SERVER_IP>:/path/to/FILENAME.ovpn ~
+```
