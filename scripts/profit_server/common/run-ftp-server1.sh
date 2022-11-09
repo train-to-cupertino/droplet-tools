@@ -1,0 +1,1 @@
+docker run --detach --env FTP_PASS=somepass --env FTP_USER=user1 --name my-ftp-server --publish 20-21:20-21/tcp --publish 40000-40009:40000-40009/tcp --volume /data:/home/user1 garethflowers/ftp-server
