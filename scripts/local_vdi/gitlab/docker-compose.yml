@@ -8,6 +8,7 @@ services:
      - "./export/containers/nginx-conf/nginx.conf:/etc/nginx/nginx.conf:ro"
      - "./export/containers/nginx-conf/gitlab-http.conf:/etc/nginx/conf.d/gitlab-http.conf:ro"
      - "./export/containers/nginx-logs:/var/log/nginx"
+#    network_mode: "bridge"
     networks:
       - gitlab
     ports:
@@ -27,10 +28,11 @@ services:
      - "./export/containers/gitlab-config:/etc/gitlab"
      - "./export/containers/gitlab-data:/var/opt/gitlab"
      - "./export/containers/gitlab-logs:/var/log/gitlab"
+#    network_mode: "bridge"
     networks:
       - gitlab
     ports:
-     - "22:22"
+     - "5022:22"
      - "443:443"
     depends_on:
       - postgresql
@@ -46,6 +48,7 @@ services:
     - "5000"
     ports:
      - "5555:5000"
+#    network_mode: "bridge"
     networks:
       - gitlab
   postgresql:
@@ -60,6 +63,7 @@ services:
      - "5432:5432"
     volumes:
      - "./export/containers/postgresql-data:/var/lib/postgresql/data"
+#    network_mode: "bridge"
     networks:
       - gitlab
   redis:
@@ -70,6 +74,7 @@ services:
     - "6379"
     volumes:
      - "./export/containers/redis-data:/data"
+#    network_mode: "bridge"
     networks:
       - gitlab
   runner:
@@ -83,6 +88,7 @@ services:
     volumes:
      - "./runner/srv/gitlab-runner/config:/etc/gitlab-runner"
      - "/var/run/docker.sock:/var/run/docker.sock"
+#    network_mode: "bridge"
     networks:
       - gitlab
     depends_on:
