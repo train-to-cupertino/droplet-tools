@@ -11,3 +11,4 @@
     * gitlab_rails['registry_port'] (for example: `"5555"`)
     * gitlab_rails['registry_path'] (for example: `"/var/opt/gitlab/gitlab-rails/shared/registry"`)
 7. Run [permits.sh](permits.sh) file to set right permissions after gitlab containers completely started (it take a few minutes)
+8. Generate ssh key locally: `ssh-keygen -t ed25519 -C "<comment>"` or `en -t rsa -b 4096 -C "<comment>"`, input passphrase for key, then copy public key to you profile (http://<GITLAB_URL_OR_IP>/-/profile/keys)
